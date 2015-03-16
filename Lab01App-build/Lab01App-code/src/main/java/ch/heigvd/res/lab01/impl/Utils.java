@@ -19,8 +19,41 @@ public class Utils {
    * the line separator, the second element is the remaining text. If the argument does not
    * contain any line separator, then the first element is an empty string.
    */
-  public static String[] getNextLine(String lines) {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+public static String[] getNextLine(String lines) {
+    String str[] = new String[2];
+    String rn = "\r\n";
+    char r = '\r';
+    char n = '\n';
+    int indexRN = lines.indexOf(rn);
+    int indexR = lines.indexOf(r);
+    int indexN = lines.indexOf(n);
+    int indexUsed;
+    int nbrChar = 1;
+      
+    // WINDOWS
+    if (indexRN != -1){
+        indexUsed = indexRN;
+        nbrChar = rn.length();
+    } // MAC 
+    else if (indexR != -1){
+        indexUsed = indexR;
+    } // UNIX
+    else if (indexN != -1){
+        indexUsed = indexN;
+    } // pas de nouvelle ligne
+    else {
+        str[0] = "";
+        str[1] = lines;
+        return str;
+    }
+    
+    indexUsed += nbrChar;
+    // premiere ligne est jusqu'au delimiteur (inclus)
+    str[0] = lines.substring(0, indexUsed);
+    // le reste du texte est depuis le delimiteur (non-incus)
+    str[1] = lines.substring(indexUsed);
+      
+    return str;
+    //throw new UnsupportedOperationException("The student has not implemented this method yet.");
   }
-
 }

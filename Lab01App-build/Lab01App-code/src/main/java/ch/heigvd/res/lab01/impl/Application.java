@@ -2,6 +2,7 @@ package ch.heigvd.res.lab01.impl;
 
 import ch.heigvd.res.lab01.impl.explorers.DFSFileExplorer;
 import ch.heigvd.res.lab01.impl.transformers.CompleteFileTransformer;
+import ch.heigvd.res.lab01.impl.transformers.NoOpFileTransformer;
 import ch.heigvd.res.lab01.interfaces.IApplication;
 import ch.heigvd.res.lab01.interfaces.IFileExplorer;
 import ch.heigvd.res.lab01.interfaces.IFileVisitor;
@@ -30,6 +31,8 @@ public class Application implements IApplication {
   public static String WORKSPACE_DIRECTORY = "./workspace/quotes";
   
   private static final Logger LOG = Logger.getLogger(Application.class.getName());
+  private String email = "david.villa@heig-vd.ch";
+  private final String encoding = "utf8";
   
   public static void main(String[] args) {
     
@@ -92,6 +95,9 @@ public class Application implements IApplication {
        * one method provided by this class, which is responsible for storing the content of the
        * quote in a text file (and for generating the directories based on the tags).
        */
+      String filename = "quote-" + i + ".utf8";
+      storeQuote(quote, filename); 
+      
       LOG.info(quote.getSource());
       for (String tag : quote.getTags()) {
         LOG.info("> " + tag);
@@ -125,7 +131,27 @@ public class Application implements IApplication {
    * @throws IOException 
    */
   void storeQuote(Quote quote, String filename) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    //throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    String quotes[] = quote.getTags();
+    String path = WORKSPACE_DIRECTORY;
+    File dir;
+    File file;
+    
+    //construction du chemin jusqu'au fichier a ecrire
+    for (String subPath : quotes){
+        path += "/" + subPath;
+    }
+    // cree le(s) repertoire
+    dir = new File(path);
+    dir.mkdirs();
+    
+    // cree le fichier
+    path += "/" + filename;
+    file = new File(path);
+    file.createNewFile();
+    
+    // remplit le fichier
+    FileUtils.write(file, quote.getQuote(), encoding);
   }
   
   /**
@@ -142,18 +168,24 @@ public class Application implements IApplication {
          * of the the IFileVisitor interface inline. You just have to add the body of the visit method, which should
          * be pretty easy (we want to write the filename, including the path, to the writer passed in argument).
          */
+          try{
+              writer.write(file.getPath() + "\n");
+          } catch(IOException e){
+              
+          }
       }
     });
   }
   
   @Override
   public String getAuthorEmail() {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    return email;
   }
 
   @Override
   public void processQuoteFiles() throws IOException {
     IFileExplorer explorer = new DFSFileExplorer();
+    //explorer.explore(new File(WORKSPACE_DIRECTORY), new NoOpFileTransformer());
     explorer.explore(new File(WORKSPACE_DIRECTORY), new CompleteFileTransformer());    
   }
 
