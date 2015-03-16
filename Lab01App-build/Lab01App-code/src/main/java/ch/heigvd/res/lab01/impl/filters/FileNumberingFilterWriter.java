@@ -79,8 +79,8 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
-      String newStr = String.valueOf(cbuf);
-      out.write(newStr, off, len);
+      String newStr = new String(cbuf);
+      this.write(newStr, off, len);
     //throw new UnsupportedOperationException("The student has not implemented this method yet.");
   }
 
