@@ -69,6 +69,8 @@ public class FileNumberingFilterWriter extends FilterWriter {
                } else {
                    line = lines[0];
                }
+               line += lineCounter + "\t";
+               lineCounter++;
                out.write(line);
            }
        }

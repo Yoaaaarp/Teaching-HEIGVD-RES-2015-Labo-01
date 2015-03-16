@@ -29,11 +29,24 @@ public static String[] getNextLine(String lines) {
     int indexN = lines.indexOf(n);
     int indexUsed;
     int nbrChar = 1;
-      
-    // WINDOWS
-    if (indexRN != -1){
+    
+    // \r\n, \r et \n sont tous les trois utilises
+    if (indexRN != -1 && indexR != -1 && indexN != -1){
+        indexUsed = indexRN < indexR ? 
+                (indexRN < indexN ? indexRN : indexN) : 
+                (indexR < indexN ? indexR : indexN);
+    } // \r\n et \r sont tous les deux utilises
+    else if (indexRN != -1 && indexR != -1){
+        indexUsed = indexRN < indexR ? indexRN : indexR;
+    } // \r\n et \n sont tous les deux utilises 
+    else if (indexRN != -1 && indexN != -1){
+        indexUsed = indexRN < indexN ? indexRN : indexN;
+    } 
+    else if (indexR != -1 && indexN != -1){
+        indexUsed = indexR < indexN ? indexR : indexN;
+    } // WINDOWS
+    else if (indexRN != -1){
         indexUsed = indexRN;
-        nbrChar = rn.length();
     } // MAC 
     else if (indexR != -1){
         indexUsed = indexR;
@@ -47,6 +60,9 @@ public static String[] getNextLine(String lines) {
         return str;
     }
     
+    if (indexUsed == indexRN){
+        nbrChar = rn.length();
+    }
     indexUsed += nbrChar;
     // premiere ligne est jusqu'au delimiteur (inclus)
     str[0] = lines.substring(0, indexUsed);
