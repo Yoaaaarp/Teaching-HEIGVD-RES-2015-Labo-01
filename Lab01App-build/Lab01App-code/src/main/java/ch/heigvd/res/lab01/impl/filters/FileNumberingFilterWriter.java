@@ -4,7 +4,6 @@ import java.io.FilterWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.logging.Logger;
-import ch.heigvd.res.lab01.impl.Utils;
 
 /**
  * This class transforms the streams of character sent to the decorated writer.
@@ -29,51 +28,12 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(String str, int off, int len) throws IOException {
-      boolean stop = false;
-      String subStr = str.substring(off, off+len);
-      String lines[];
-      String line;
       
-       while(!stop){
-           lines = Utils.getNextLine(subStr);
-           // pas de nouvelle ligne
-           if (lines[0].equals("")){
-               if (newLine){
-                   line = lineCounter + "\t" + lines[1];
-                   lineCounter++;
-                   newLine = false;
-               } else {
-                   line = lines[1];
-               }
-               out.write(line);
-               stop = true;
-           } // plus de nouvelle ligne disponible
-           else if (lines[1].equals("")){
-               if (newLine){
-                   line = lineCounter + "\t" + lines[0];
-                   lineCounter++;
-                   newLine = false;
-               } else {
-                   line = lines[0];
-               }
-               line += lineCounter + "\t";
-               lineCounter++;
-               out.write(line);
-               stop = true;
-           } // on a recu une ligne et il en reste
-           else {
-               if (newLine){
-                   line = lineCounter + "\t" + lines[0];
-                   lineCounter++;
-                   newLine = false;
-               } else {
-                   line = lines[0];
-               }
-               line += lineCounter + "\t";
-               lineCounter++;
-               out.write(line);
-           }
-       }
+      String subStr = str.substring(off, off+len);
+      int taille = subStr.length();
+      for (int i = 0; i < taille; i++){
+          this.write((int)subStr.charAt(i));
+      }
     //throw new UnsupportedOperationException("The student has not implemented this method yet.");
   }
 

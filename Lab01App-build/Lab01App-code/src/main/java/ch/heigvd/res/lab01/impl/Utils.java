@@ -19,6 +19,36 @@ public class Utils {
    * the line separator, the second element is the remaining text. If the argument does not
    * contain any line separator, then the first element is an empty string.
    */
+  
+  public static String[] getNextLine(String lines){
+      int taille = lines.length();
+      int index = 0;
+      int nbrChar = 1;
+      char cCourant;
+      String lignes[] = new String[2];
+      // cas par defaut, pas de retour ligne detecte
+      lignes[0] = "";
+      lignes[1] = lines;
+      
+      while(index < taille){
+          cCourant = lines.charAt(index);
+          if (cCourant == '\r' || cCourant == '\n'){ // RL detecte
+              // controle si RL windows et qu'on ne se trouve pas deja a la fin
+              // du fichier
+              if (cCourant == '\r' && index != taille-1 && lines.charAt(index+1) == '\n'){
+                  nbrChar++;
+              }
+              lignes[0] = lines.substring(0, index+nbrChar);
+              lignes[1] = lines.substring(index+nbrChar, taille);
+              return lignes;
+          }
+          
+          index++;
+      }
+      return lignes;
+  }
+  
+  /*
 public static String[] getNextLine(String lines) {
     String str[] = new String[2];
     String rn = "\r\n";
@@ -71,5 +101,5 @@ public static String[] getNextLine(String lines) {
       
     return str;
     //throw new UnsupportedOperationException("The student has not implemented this method yet.");
-  }
+  }*/
 }

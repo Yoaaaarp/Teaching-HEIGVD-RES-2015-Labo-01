@@ -139,14 +139,14 @@ public class Application implements IApplication {
     
     //construction du chemin jusqu'au fichier a ecrire
     for (String subPath : quotes){
-        path += "\\" + subPath;
+        path += File.separator + subPath;
     }
     // cree le(s) repertoire
     dir = new File(path);
     dir.mkdirs();
     
     // cree le fichier
-    path += "\\" + filename;
+    path += File.separator + filename;
     file = new File(path);
     file.createNewFile();
     
