@@ -134,20 +134,24 @@ public class Application implements IApplication {
     //throw new UnsupportedOperationException("The student has not implemented this method yet.");
     String quotes[] = quote.getTags();
     String path = WORKSPACE_DIRECTORY;
+    File parent = new File(path);
+    parent.mkdir();
     File dir;
     File file;
     
     //construction du chemin jusqu'au fichier a ecrire
     for (String subPath : quotes){
-        path += File.separator + subPath;
+        parent = new File(parent, subPath);
+        parent.mkdir();
+        //path += File.separator + subPath;
     }
     // cree le(s) repertoire
-    dir = new File(path);
-    dir.mkdirs();
+    //dir = new File(path);
+    //dir.mkdirs();
     
     // cree le fichier
-    path += File.separator + filename;
-    file = new File(path);
+    //path += File.separator + filename;
+    file = new File(parent, filename);
     file.createNewFile();
     
     // remplit le fichier
@@ -169,7 +173,8 @@ public class Application implements IApplication {
          * be pretty easy (we want to write the filename, including the path, to the writer passed in argument).
          */
           try{
-              writer.write(file.getPath() + "\n");
+              //writer.write(file.getPath() + "\n");
+              writer.write(file.getParent() + File.separator + file.getName() + "\n");
           } catch(IOException e){
               
           }
